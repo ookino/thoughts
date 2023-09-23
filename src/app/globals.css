@@ -79,6 +79,10 @@
     @apply w-6 h-6 stroke-zinc-950 dark:stroke-zinc-50 stroke-2 hover:fill-zinc-300 dark:hover:fill-zinc-600;
   }
 
+  .icon-destructive {
+    @apply w-4 h-4 stroke-rose-600 dark:stroke-rose-300 stroke-2 hover:fill-rose-300 dark:hover:fill-zinc-600;
+  }
+
   .icon-active {
     @apply fill-zinc-400 dark:fill-zinc-700;
   }

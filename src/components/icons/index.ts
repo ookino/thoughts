@@ -4,4 +4,7 @@ import { HomeIcon } from './home-icon'
 import { UserIcon } from './user-icon'
 import { UsersIcon } from './users-icon'
 import { MenuIcon } from './menu-icon'
-export { ActivityIcon, ExploreIcon, HomeIcon, UserIcon, UsersIcon, MenuIcon }
+import { LogoutIcon } from './logout-icon'
+import { GithubIcon } from './github-icon'
+import { GoogleIcon } from './google-icon'
+export { ActivityIcon, ExploreIcon, HomeIcon, UserIcon, UsersIcon, MenuIcon, LogoutIcon, GoogleIcon, GithubIcon }

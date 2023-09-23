@@ -8,9 +8,11 @@ import { MenuIcon } from '../icons'
 import { SignOutButton, SignedIn } from '@clerk/nextjs'
 import { Button } from '../ui/button'
 import { LogOut } from 'lucide-react'
+import { signIn, signOut, useSession } from 'next-auth/react'
+import OptionsMenu from './options-menu'
 
 export default function LeftSidebar() {
-  const router = useRouter()
+  const { data: session } = useSession()
   const path = usePathname()
 
   return (
@@ -30,12 +32,7 @@ export default function LeftSidebar() {
         })}
       </div>
       <div className='flex flex-col gap-4 items-center'>
-        <MenuIcon />
-        {/* <SignedIn>
-          <SignOutButton>
-            <LogOut className='icon' />
-          </SignOutButton>
-        </SignedIn> */}
+        <OptionsMenu />
       </div>
     </section>
   )

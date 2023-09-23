@@ -1,23 +1,26 @@
-import '../globals.css';
-import { ClerkProvider } from '@clerk/nextjs';
-import { Inter } from 'next/font/google';
+import '../globals.css'
+import { getServerSession } from 'next-auth'
+import { sataoshi } from '../font-config'
+import { redirect } from 'next/navigation'
+import SessionProvider from '@/components/session-provider'
+
 export const metadata = {
   title: 'thoughts',
-  description: 'An X/thread clone with communites',
-};
+  description: 'An X/thread clone with communites'
+}
 
-const inter = Inter({ subsets: ['latin'] });
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const session = await getServerSession()
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+  // if (session) {
+  //   redirect('/')
+  // }
+
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={`${inter.className} bg-neutral-900`}>{children}</body>
-      </html>
-    </ClerkProvider>
-  );
+    <html lang='en'>
+      <SessionProvider session={session}>
+        <body className={`${sataoshi.className}`}>{children}</body>
+      </SessionProvider>
+    </html>
+  )
 }
