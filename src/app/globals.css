@@ -51,12 +51,12 @@
 
 @layer components {
   .topnav {
-    @apply fixed top-0 z-50 flex w-full items-center justify-between px-6 py-3;
+    @apply absolute top-0 left-0 flex w-full items-center justify-between px-6 h-16;
     background-color: var(--card);
   }
 
   .leftsidebar {
-    @apply sticky left-0 top-0 z-20 px-4 flex h-screen w-fit flex-col justify-between items-center overflow-auto  py-24 border-r max-md:hidden bg-zinc-50 dark:bg-zinc-950;
+    @apply sticky left-0 top-0 z-20 px-4 flex h-screen w-fit flex-col justify-between items-center overflow-auto  py-24 border-r max-md:hidden bg-zinc-50 dark:bg-zinc-900;
   }
 
   .leftsidebar_link {
@@ -76,7 +76,7 @@
   }
 
   .icon {
-    @apply w-6 h-6 stroke-zinc-950 dark:stroke-zinc-50 stroke-2 hover:fill-zinc-300 dark:hover:fill-zinc-600;
+    @apply w-6 h-6 stroke-zinc-950 dark:stroke-zinc-400 stroke-2 hover:fill-zinc-300 dark:hover:fill-zinc-950;
   }
 
   .icon-destructive {
@@ -84,7 +84,7 @@
   }
 
   .icon-active {
-    @apply fill-zinc-400 dark:fill-zinc-700;
+    @apply fill-zinc-400 dark:fill-zinc-950;
   }
 }
 
@@ -114,6 +114,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground tracking-tight;
   }
 }

@@ -2,7 +2,6 @@ import { Logo } from '@/components/icons/logo'
 import { OAuthProviders } from '@/lib/actions/auth-action'
 import Link from 'next/link'
 import { UserAuthForm } from '@/components/forms/user-auth-form'
-import { BuiltInProviderType } from 'next-auth/providers/index'
 
 export default async function LoginPage() {
   const providers = await OAuthProviders()

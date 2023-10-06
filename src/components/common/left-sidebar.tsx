@@ -16,7 +16,7 @@ export default function LeftSidebar() {
   const path = usePathname()
 
   return (
-    <section className='leftsidebar custom-scrollbar '>
+    <section className='leftsidebar custom-scrollbar z-50'>
       <div className=''>
         <Logo />
       </div>

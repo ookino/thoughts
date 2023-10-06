@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { sataoshi } from '../font-config'
 import { redirect } from 'next/navigation'
 import SessionProvider from '@/components/session-provider'
+import { authOptions } from '@/lib/auth'
 
 export const metadata = {
   title: 'thoughts',
@@ -12,9 +13,9 @@ export const metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession()
 
-  // if (session) {
-  //   redirect('/')
-  // }
+  if (session && session.user) {
+    redirect('/')
+  }
 
   return (
     <html lang='en'>

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { PopulatedThought } from './thought-model'
 
 interface IUser {
   username?: String
@@ -37,7 +38,11 @@ const userSchema = new mongoose.Schema({
   ]
 })
 
-export type User = mongoose.InferSchemaType<typeof userSchema>
+export type RawUser = mongoose.InferSchemaType<typeof userSchema>
+export type User = RawUser & { _id: mongoose.Types.ObjectId }
+export type PopulatedUser = {
+  thoughts: PopulatedThought
+} & User
 
 const UserModel = mongoose.models.User || mongoose.model<User>('User', userSchema)
 export default UserModel

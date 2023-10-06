@@ -9,7 +9,7 @@ export const Logo: React.FC<MySVGComponentProps> = ({ className }) => {
       width='24'
       height='24'
       viewBox='0 0 24 24'
-      className='fill-zinc-600 stroke-zinc-950 stroke-2 w-10 h-10'
+      className='fill-zinc-600 dark:fill-zinc-950 stroke-zinc-950 dark:stroke-zinc-300 stroke-2 w-10 h-10'
       strokeLinecap='round'
       strokeLinejoin='round'
     >

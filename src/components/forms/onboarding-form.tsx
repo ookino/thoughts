@@ -100,7 +100,7 @@ export function OnboardingForm({ user }: OnboardingFormProps) {
                     <AvatarFallback>TH</AvatarFallback>
                   </Avatar>
                   <div>
-                    <Button onClick={() => fileInputRef.current?.click()} variant={'outline'} size={'sm'}>
+                    <Button type='button' onClick={() => fileInputRef.current?.click()} variant={'outline'} size={'sm'}>
                       Edit
                     </Button>
                     <Input

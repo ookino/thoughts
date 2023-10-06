@@ -2,9 +2,10 @@
 
 import { SendServerActionResponseProps, sendServerActionResponse } from './../utils'
 import UserModel from '../models/user-model'
-import type { User } from '../models/user-model'
+import type { PopulatedUser, User } from '../models/user-model'
 import { connectToDB } from '../database/mongoose'
 import { revalidatePath } from 'next/cache'
+import ThoughtModel from '../models/thought-model'
 
 interface UpdateUserParams {
   userId: string
@@ -60,6 +61,34 @@ export async function getSingleUser(id: string): Promise<SendServerActionRespons
     } else {
       throw new Error('User not found')
     }
+  } catch (error: any) {
+    return sendServerActionResponse({ ok: false, error: error?.message as string })
+  }
+}
+
+export async function getUserThoughts(id: string): Promise<SendServerActionResponseProps<PopulatedUser>> {
+  connectToDB()
+  try {
+    const thoughts = await UserModel.findOne({ id }).populate({
+      path: 'thoughts',
+      model: ThoughtModel,
+      populate: [
+        {
+          path: 'children',
+          model: ThoughtModel,
+          populate: {
+            path: 'user',
+            model: UserModel
+          }
+        },
+        {
+          path: 'user',
+          model: UserModel
+        }
+      ]
+    })
+    console.log(thoughts)
+    return sendServerActionResponse({ ok: true, data: thoughts })
   } catch (error: any) {
     return sendServerActionResponse({ ok: false, error: error?.message as string })
   }
