@@ -31,7 +31,7 @@ export default async function Thought({ params }: { params: { id: string } }) {
           comments={thought?.children}
         />
 
-        <div className='mt-3 border-y  bg-zinc-50'>
+        <div className='mt-3 border-y bg-zinc-50 dark:bg-zinc-900'>
           <RespondForm
             thoughtId={thought._id.toString()}
             currentUserImage={data?.image}

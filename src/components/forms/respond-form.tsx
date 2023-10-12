@@ -52,7 +52,7 @@ export default function RespondForm({ thoughtId, currentUserId, currentUserImage
                   <input
                     placeholder="What's your reply"
                     {...field}
-                    className='w-full outline-none text-sm px-4 tracking-tight bg-zinc-50 border-none focus-visible:ring-0 focus-visible:ring-transparent focus:ring-transparent'
+                    className='w-full outline-none text-sm px-4 tracking-tight bg-zinc-50 dark:bg-zinc-900 border-none focus-visible:ring-0 focus-visible:ring-transparent focus:ring-transparent'
                   />
                 </FormControl>
               </FormItem>

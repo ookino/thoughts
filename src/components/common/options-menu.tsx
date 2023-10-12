@@ -15,9 +15,11 @@ export default function OptionsMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <MenuIcon />
+        <div className='p-4'>
+          <MenuIcon />
+        </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent side='right' sideOffset={80} className='w-40'>
+      <DropdownMenuContent className='w-40 mx-4 max-md:my-10 my-4'>
         <DropdownMenuLabel>
           <span className='text-bold text-zinc-600 uppercase text-xs'>options</span>
         </DropdownMenuLabel>

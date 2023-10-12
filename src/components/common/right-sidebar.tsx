@@ -1,3 +1,7 @@
 export default function RightSidebar() {
-  return <h1>Right Sidebar</h1>
+  return (
+    <div className='max-md:hidden'>
+      <h1>Right Sidebar</h1>
+    </div>
+  )
 }

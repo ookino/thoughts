@@ -8,9 +8,8 @@ import { redirect } from 'next/navigation'
 export default async function OnboardingPage() {
   const session = await getServerSession(authOptions)
   const { ok, data } = await getSingleUser(session!.user.id)
-
+  console.log(data)
   if (!ok) redirect('/sign-in')
-  if (data?.onboarded) redirect('/')
 
   return (
     <main className='flex h-screen w-screen flex-col items-center justify-center'>

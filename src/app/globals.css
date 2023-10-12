@@ -64,11 +64,11 @@
   }
 
   .bottombar {
-    @apply border w-full rounded-2xl bg-zinc-50 dark:bg-zinc-950 py-4 px-7 md:hidden;
+    @apply border w-full rounded-xl bg-zinc-50 dark:bg-zinc-950 py-4 md:hidden;
   }
 
   .bottombar_container {
-    @apply flex items-center justify-between gap-5;
+    @apply flex  justify-between;
   }
 
   .bottombar_link {

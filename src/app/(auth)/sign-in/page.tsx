@@ -5,7 +5,7 @@ import { UserAuthForm } from '@/components/forms/user-auth-form'
 
 export default async function LoginPage() {
   const providers = await OAuthProviders()
-  console.log(providers)
+  console.log('providers-->>', providers)
   return (
     <main className='flex h-screen w-screen flex-col items-center justify-center'>
       <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>

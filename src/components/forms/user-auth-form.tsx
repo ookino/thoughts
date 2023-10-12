@@ -21,18 +21,24 @@ export function UserAuthForm({ providers }: UserAuthFormProps) {
   }
   return (
     <div className={cn('grid gap-6')}>
-      {Object.values(providers).map((provider) => (
-        <div key={provider?.name}>
-          <Button
-            className='w-full justify-start gap-8'
-            variant={'outline'}
-            onClick={() => signIn(provider?.id, { callbackUrl: '/onboarding' })}
-          >
-            {provider.name === 'GitHub' ? <GithubIcon /> : <GoogleIcon />}
-            Continue with {provider?.name}
-          </Button>
-        </div>
-      ))}
+      <div className='flex flex-col gap-2'>
+        {Object.values(providers)
+          .filter((provider) => provider.name !== 'Email')
+          .map((provider) => (
+            <div key={provider?.name}>
+              <Button
+                className='w-full justify-start gap-8'
+                variant={'outline'}
+                onClick={() => signIn(provider?.id, { callbackUrl: '/onboarding' })}
+              >
+                {provider.name === 'GitHub' && <GithubIcon />}
+                {provider.name === 'Google' && <GoogleIcon />}
+                Continue with {provider?.name}
+              </Button>
+            </div>
+          ))}
+      </div>
+
       <div className='relative'>
         <div className='absolute inset-0 flex items-center'>
           <span className='w-full border-t' />

@@ -2,12 +2,13 @@
 import { usePathname, useRouter } from 'next/navigation'
 import { sidebarLinks } from '@/constants'
 import Link from 'next/link'
+import OptionsMenu from './options-menu'
 
 export default function BottomNav() {
   const path = usePathname()
   return (
-    <div className='fixed p-4 bottom-0 z-50 w-full'>
-      <section className='bottombar'>
+    <div className='fixed p-4 bottom-0 z-50 w-full '>
+      <section className='bottombar bg-zinc-50 dark:bg-zinc-900 '>
         <div className='bottombar_container'>
           {sidebarLinks.map((link) => {
             const Icon = link.logo
@@ -18,6 +19,7 @@ export default function BottomNav() {
               </Link>
             )
           })}
+          <OptionsMenu />
         </div>
       </section>
     </div>

@@ -48,6 +48,7 @@ export async function getThoughts(pageNumber = 1, pageSize = 20) {
     const isNext = totalThoughts > toSkip + thoughts.length
     return sendServerActionResponse({ ok: true, data: { thoughts, isNext } })
   } catch (error) {
+    console.log(error)
     return sendServerActionResponse({ ok: false, error: 'Could not get Thoughts' })
   }
 }

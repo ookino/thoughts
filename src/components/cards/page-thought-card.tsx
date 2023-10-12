@@ -28,7 +28,7 @@ export default function PageThoughtCard({
   isComment
 }: PageThoughtCardProps) {
   return (
-    <article className='flex w-full flex-col rounded-lg bg-zinc-50 border'>
+    <article className='flex w-full flex-col rounded-lg bg-zinc-50 dark:bg-zinc-900 border text-zinc-950 dark:text-zinc-50'>
       <div className='flex flex-col gap-4 items-start justify-between p-8'>
         <div className='w-full flex flex-1 gap-4'>
           <div className='flex flex-col items-center justify-center'>

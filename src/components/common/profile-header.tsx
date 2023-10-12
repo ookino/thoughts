@@ -15,7 +15,7 @@ interface ProfileHeaderProps {
 
 export default function ProfileHeader({ name, username, image, bio, thoughts }: ProfileHeaderProps) {
   return (
-    <div className='flex flex-col rounded-lg p-8 bg-zinc-50 border gap-4'>
+    <div className='flex flex-col rounded-lg max-md:p-4 p-8 bg-zinc-50 dark:bg-zinc-900 border gap-4'>
       <div className='flex justify-between items-center'>
         <div>
           <h1 className='text-xl font-bold'>{name}</h1>
@@ -33,20 +33,20 @@ export default function ProfileHeader({ name, username, image, bio, thoughts }: 
         </Avatar>
       </div>
       <p className='text-sm'>{bio}</p>
-      <div className='flex justify-between items-end'>
-        <div className=' text-zinc-500 flex gap-4 text-sm font-bold'>
+      <div className='flex max-md:flex-col justify-between items-end max-md:gap-4'>
+        <div className=' text-zinc-500 flex gap-4 text-sm font-bold max-md:w-full max-md:justify-between'>
           <p>
-            <span className='text-zinc-950'>{thoughts}</span> Thoughts
+            <span className='text-zinc-950 dark:text-zinc-50'>{thoughts}</span>&nbsp;Thoughts
           </p>
           <p>
-            <span className='text-zinc-950'>10k</span> Following
+            <span className='text-zinc-950 dark:text-zinc-50'>10k</span>&nbsp; Following
           </p>
           <p>
-            <span className='text-zinc-950'>11k</span> Followers
+            <span className='text-zinc-950 dark:text-zinc-50'>11k</span> &nbsp;Followers
           </p>
         </div>
 
-        <Button size={'sm'} className='gap-2'>
+        <Button size={'sm'} className='gap-2 max-md:w-full'>
           <UserPlus2 className='w-4 h-4' />
           Follow
         </Button>

@@ -6,8 +6,7 @@ import Link from 'next/link'
 import { Logo } from '../icons/logo'
 import { MenuIcon } from '../icons'
 import { SignOutButton, SignedIn } from '@clerk/nextjs'
-import { Button } from '../ui/button'
-import { LogOut } from 'lucide-react'
+
 import { signIn, signOut, useSession } from 'next-auth/react'
 import OptionsMenu from './options-menu'
 
