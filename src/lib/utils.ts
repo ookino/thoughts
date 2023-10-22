@@ -16,6 +16,24 @@ export function isBase64Image(imageData: string) {
   return base64Regex.test(imageData)
 }
 
+// export function stringToObjectId(id: string): mongoose.Types.ObjectId | null {
+//   if (mongoose.Types.ObjectId.isValid(id)) {
+//     return new mongoose.Types.ObjectId(id)
+//   } else {
+//     return null
+//   }
+// }
+
+export function getInitials(name: string) {
+  const words = name.split(' ')
+  let initials = ''
+  for (let i = 0; i < words.length; i++) {
+    initials += words[i][0].toUpperCase()
+  }
+
+  return initials
+}
+
 export function sendServerActionResponse({
   ok,
   data,

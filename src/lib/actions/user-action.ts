@@ -1,95 +1,137 @@
 'use server'
 
-import { SendServerActionResponseProps, sendServerActionResponse } from './../utils'
-import UserModel from '../models/user-model'
-import type { PopulatedUser, User } from '../models/user-model'
-import { connectToDB } from '../database/mongoose'
+import { DocumentType } from '@typegoose/typegoose'
 import { revalidatePath } from 'next/cache'
-import ThoughtModel from '../models/thought-model'
+import * as z from 'zod'
 
-interface UpdateUserParams {
-  userId: string
-  username: string
-  name: string
-  bio: string
-  image: string
-  path: string
-}
-export async function updateUser({
-  username,
-  name,
-  bio,
-  image,
-  userId,
-  path
-}: UpdateUserParams): Promise<SendServerActionResponseProps<any>> {
+import { connectToDB } from '../database/mongoose'
+import { ThoughtModel, UserModel, UserRelationshipModel } from '../models'
+import { Thought } from '../models/thought-model'
+import { User } from '../models/user-model'
+import { updateUserSchema } from '../validations/user-validation'
+
+export async function updateUser(body: z.infer<typeof updateUserSchema>): Promise<ReturnActionResult> {
   connectToDB()
-  console.log(username, name, bio, image, userId, path)
+
+  const { userId, name, bio, image, username, path } = body
   try {
+    const usernameExists = await UserModel.findOne({ username }).exec()
+    if (!!usernameExists) {
+      return { isError: true, error: 'Username already exists' }
+    }
     const user = await UserModel.findByIdAndUpdate(
       userId,
       {
-        username: username.toLowerCase(),
+        username,
         name,
         bio,
         image,
-        onboarded: true
+        isOnboard: true
       },
       { upsert: true }
     )
-
     if (user) {
       if (path === '/profile/update') {
         revalidatePath(path)
       }
-      return sendServerActionResponse({ ok: true })
-    } else {
-      throw new Error('Something went wrong, Try again later')
     }
+
+    return { isSuccess: true }
+  } catch (error: any) {
+    return { isError: true, error: 'Something went wrong' }
+  }
+}
+
+export async function getSingleUser(id: string): Promise<ReturnActionResult<User & { _id: string }>> {
+  console.log('recived id', id)
+
+  try {
+    connectToDB()
+    const user = await UserModel.findById(id)
+    if (!user) {
+      return { isError: true, error: 'User not found' }
+    }
+    console.log(user)
+    return { isSuccess: true, data: { ...user.toObject(), _id: user._id.toString() } as User & { _id: string } }
   } catch (error: any) {
     console.log(error)
-    return sendServerActionResponse({ ok: false, error: error?.message as string })
+    return { isError: true, error: 'Something went wrong' }
   }
 }
 
-export async function getSingleUser(id: string): Promise<SendServerActionResponseProps<User & { _id: string }>> {
+export async function getUserByUsername(username: string): Promise<ReturnActionResult<User & { _id: string }>> {
+  console.log('recived id', username)
+
+  try {
+    connectToDB()
+    const user = await UserModel.findOne({ username }).exec()
+    if (!user) {
+      return { isError: true, error: 'User not found' }
+    }
+    console.log(user)
+    return { isSuccess: true, data: { ...user.toObject(), _id: user._id.toString() } as User & { _id: string } }
+  } catch (error: any) {
+    console.log(error)
+    return { isError: true, error: 'Something went wrong' }
+  }
+}
+
+export async function followUser(
+  followerId: string,
+  followingId: string
+): Promise<ReturnActionResult<User & { _id: string }>> {
   connectToDB()
   try {
-    const user = await UserModel.findById(id)
-    if (user) {
-      return sendServerActionResponse({ ok: true, data: { ...user.toObject(), _id: user._id.toString() } })
-    } else {
-      throw new Error('User not found')
+    const relationship = new UserRelationshipModel({
+      follower: followerId,
+      following: followingId
+    })
+    await relationship.save()
+    await UserModel.findByIdAndUpdate(followerId, { $push: { following: relationship } }).exec()
+    const userFollowed = await UserModel.findByIdAndUpdate(followingId, { $push: { followers: relationship } }).exec()
+    if (!userFollowed) {
+      return { isError: true, error: 'Something went wrong' }
+    }
+    return {
+      isSuccess: true,
+      data: { ...userFollowed.toObject(), _id: userFollowed._id.toString() } as User & { _id: string }
     }
   } catch (error: any) {
-    return sendServerActionResponse({ ok: false, error: error?.message as string })
+    return { isError: true }
   }
 }
 
-export async function getUserThoughts(id: string): Promise<SendServerActionResponseProps<PopulatedUser>> {
+export async function unfollowUser(followerId: string, followingId: string) {
   connectToDB()
   try {
-    const thoughts = await UserModel.findOne({ id }).populate({
-      path: 'thoughts',
-      model: ThoughtModel,
-      populate: [
-        {
-          path: 'children',
-          model: ThoughtModel,
-          populate: {
-            path: 'user',
-            model: UserModel
-          }
-        },
-        {
-          path: 'user',
-          model: UserModel
-        }
-      ]
-    })
-    console.log(thoughts)
-    return sendServerActionResponse({ ok: true, data: thoughts })
+    await UserRelationshipModel.findOneAndDelete({ follower: followerId, following: followingId })
+    await UserModel.findByIdAndUpdate(followerId, { $pull: { following: { following: followingId } } })
+    await UserModel.findByIdAndUpdate(followingId, { $pull: { followers: { follower: followerId } } })
   } catch (error: any) {
-    return sendServerActionResponse({ ok: false, error: error?.message as string })
+    return { isError: true, error: 'Something went wrong' }
+  }
+}
+
+export async function isUserFollowing(followerId: string, followingId: string): Promise<ReturnActionResult> {
+  connectToDB()
+  try {
+    const existingRelationship = await UserRelationshipModel.findOne({ follower: followerId, following: followingId })
+    return { isSuccess: !!existingRelationship }
+  } catch (error: any) {
+    console.log(error)
+    return { isError: true }
+  }
+}
+
+export async function getThoughtsFromFollowedUsers(userId: string): Promise<ReturnActionResult<Thought[]>> {
+  connectToDB()
+
+  try {
+    const currentUser = await UserModel.findById(userId)
+    const followingUserIds = currentUser?.following.map((relationship: any) => relationship.following)
+    const thoughtsFromFollowedUsers = await ThoughtModel.find({ user: { $in: followingUserIds } })
+    return { isSuccess: true, data: thoughtsFromFollowedUsers }
+  } catch (error) {
+    return { isError: true }
   }
 }

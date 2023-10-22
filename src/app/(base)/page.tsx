@@ -1,33 +1,43 @@
-import { getThoughts } from '@/lib/actions/thought-action'
-import { UserButton } from '@clerk/nextjs'
-import { authOptions } from '@/lib/auth'
-import { getServerSession } from 'next-auth'
 import ThoughtCard from '@/components/cards/thought-card'
-import { TopNav } from '@/components/common'
-import { HomeIcon } from '@/components/icons'
+import NoThoughts from '@/components/common/no-thoughts'
+import { getThoughts } from '@/lib/actions/thought-action'
+import { authOptions } from '@/lib/auth'
+import { Thought } from '@/types/thought-type'
+import { ObjectId } from 'mongoose'
+import { getServerSession } from 'next-auth'
 export default async function Home() {
-  const { ok, data } = await getThoughts(1, 30)
-  console.log('-------->', data.thoughts)
+  const { isError, data } = (await getThoughts(1, 30)) as {
+    isError: boolean
+    data: { thoughts: Thought[]; isNext: boolean }
+  }
   const session = await getServerSession(authOptions)
 
-  if (data.thoughts) {
+  if (isError) {
+  }
+
+  if (data) {
     return (
       <div className='relative flex flex-col'>
         <section className='flex flex-col gap-8'>
           {data.thoughts.length === 0 ? (
-            <p>No threads found</p>
+            <NoThoughts />
           ) : (
             <>
-              {data.thoughts.map((item: any) => (
+              {data.thoughts.map((item) => (
                 <ThoughtCard
                   key={item._id}
                   id={item._id}
                   currentUserId={session?.user.id as string}
-                  parentId={item.parentId}
+                  parentId={item?.responseTo}
                   content={item.text}
-                  user={item.user}
+                  user={{
+                    name: item.author.name,
+                    image: item.author.image,
+                    id: item.author._id.toString(),
+                    username: item.author.username
+                  }}
                   createdAt={item.createdAt}
-                  comments={item.children}
+                  comments={item.responses}
                 />
               ))}
             </>
@@ -36,6 +46,4 @@ export default async function Home() {
       </div>
     )
   }
-
-  return <h1>No thoughts</h1>
 }

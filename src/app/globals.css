@@ -80,7 +80,7 @@
   }
 
   .icon-destructive {
-    @apply w-4 h-4 stroke-rose-600 dark:stroke-rose-300 stroke-2 hover:fill-rose-300 dark:hover:fill-zinc-600;
+    @apply stroke-rose-600 dark:stroke-rose-400 stroke-2 hover:stroke-rose-300 dark:hover:stroke-rose-600;
   }
 
   .icon-active {

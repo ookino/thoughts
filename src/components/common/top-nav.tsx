@@ -1,17 +1,16 @@
 'use client'
 
-import { SignOutButton, SignedIn } from '@clerk/nextjs'
-import Link from 'next/link'
-import { Button } from '../ui/button'
-import { ArrowBigLeft, ArrowLeft, LogOut, MoveLeft, Quote } from 'lucide-react'
-import React from 'react'
-import { ModeToggle } from './mode-toggle'
 import { sidebarLinks } from '@/constants'
+import { SignOutButton, SignedIn } from '@clerk/nextjs'
+import { ArrowBigLeft, ArrowLeft, LogOut, MoveLeft, Quote } from 'lucide-react'
+import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import React from 'react'
 
-import { create } from 'zustand'
-import { useStore } from '../store'
 import BackButton from './back-button'
+import { ModeToggle } from './mode-toggle'
+import { ActivityIcon } from '../icons'
+import { useStore } from '../store'
 
 export default function TopNav() {
   const path = usePathname()
@@ -34,7 +33,10 @@ export default function TopNav() {
           })}
         </h1>
       </div>
-      <ModeToggle />
+      <div className='flex items-center gap-4 rlative'>
+        <ActivityIcon isActive={false} />
+        <ModeToggle />
+      </div>
     </div>
   )
 }

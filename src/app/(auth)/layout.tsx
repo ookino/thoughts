@@ -1,10 +1,12 @@
 import '../globals.css'
-import { getServerSession } from 'next-auth'
-import { sataoshi } from '../font-config'
-import { redirect } from 'next/navigation'
 import SessionProvider from '@/components/session-provider'
-import { authOptions } from '@/lib/auth'
+import { Toaster } from '@/components/ui/toaster'
 import { getSingleUser } from '@/lib/actions/user-action'
+import { ToastProvider } from '@radix-ui/react-toast'
+import { redirect } from 'next/navigation'
+import { getServerSession } from 'next-auth'
+
+import { sataoshi } from '../font-config'
 export const metadata = {
   title: 'thoughts',
   description: 'An X/thread clone with communites'
@@ -14,8 +16,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const session = await getServerSession()
 
   if (session && session.user) {
-    const { ok, data } = await getSingleUser(session!.user.id)
-    if (ok && !data?.onboarded) {
+    const { isSuccess, data } = await getSingleUser(session!.user.id)
+    if (isSuccess && !data?.isOnboard) {
       redirect('/onboarding')
     }
   }
@@ -24,6 +26,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang='en'>
       <SessionProvider session={session}>
         <body className={`${sataoshi.className}`}>{children}</body>
+        <Toaster />
       </SessionProvider>
     </html>
   )

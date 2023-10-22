@@ -1,4 +1,5 @@
 import { ActivityIcon, ExploreIcon, HomeIcon, UserIcon, UsersIcon } from '@/components/icons'
+import PlusIcon from '@/components/icons/plus-icon'
 
 export const sidebarLinks = [
   {
@@ -12,10 +13,10 @@ export const sidebarLinks = [
     label: 'Explore'
   },
   {
-    logo: ActivityIcon,
-    route: '/activity',
-    label: 'Activity'
-  },
+    logo: PlusIcon,
+    route: '/new-thought',
+    label: 'New Thought'
+  }
   // {
   //   logo: '/assets/create.svg',
   //   route: '/create-thread',
@@ -26,11 +27,6 @@ export const sidebarLinks = [
   //   route: '/communities',
   //   label: 'Communities'
   // },
-  {
-    logo: UserIcon,
-    route: '/profile',
-    label: 'Profile'
-  }
 ]
 
 export const profileTabs = [

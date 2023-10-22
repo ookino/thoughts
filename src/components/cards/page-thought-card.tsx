@@ -1,10 +1,11 @@
-import Link from 'next/link'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { ActivityIcon } from '../icons'
-import { Heart, MessageCircle, Reply } from 'lucide-react'
-import mongoose, { ObjectId } from 'mongoose'
 import { PopulatedThought, PopulatedUser } from '@/lib/models/thought-model'
 import dayjs from 'dayjs'
+import { Heart, MessageCircle, Reply } from 'lucide-react'
+import mongoose, { ObjectId } from 'mongoose'
+import Link from 'next/link'
+
+import { ActivityIcon } from '../icons'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
 interface PageThoughtCardProps {
   id: mongoose.Types.ObjectId

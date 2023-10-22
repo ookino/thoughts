@@ -1,20 +1,22 @@
-import Link from 'next/link'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { ActivityIcon } from '../icons'
-import { Heart, MessageCircle, Reply } from 'lucide-react'
 import dayjs from 'dayjs'
-import { useStore } from '../store'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { Heart, MessageCircle, Reply } from 'lucide-react'
+import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+
+import { ActivityIcon } from '../icons'
+import { useStore } from '../store'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
 dayjs.extend(relativeTime)
 
 interface ThoughtCardProps {
   id: string
   currentUserId: string
-  parentId: string | null
+  parentId?: string | null
   content: string
   user: {
+    username: string
     name: string
     image: string
     id: string
@@ -43,7 +45,7 @@ export default function ThoughtCard({
         <div className='flex items-start justify-between'>
           <div className='w-full flex flex-1 gap-4'>
             <div className='flex flex-col items-center justify-center'>
-              <Link href={`/profile/${user.id}`}>
+              <Link href={`/profile/${user.username}`}>
                 <Avatar className='w-9 h-9 max-md:w-8 max-md:h-8'>
                   <AvatarImage src={user.image} />
                   <AvatarFallback>u</AvatarFallback>

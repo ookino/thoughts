@@ -1,21 +1,24 @@
 'use client'
 
 import { sidebarLinks } from '@/constants'
-import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { signOut } from 'next-auth/react'
+
+import { LogoutIcon, UserIcon } from '../icons'
 import { Logo } from '../icons/logo'
-import { MenuIcon } from '../icons'
-import { SignOutButton, SignedIn } from '@clerk/nextjs'
 
-import { signIn, signOut, useSession } from 'next-auth/react'
-import OptionsMenu from './options-menu'
+interface Props {
+  userId: string
+  username: string
+  sessionId: string
+}
 
-export default function LeftSidebar() {
-  const { data: session } = useSession()
+export default function LeftSidebar({ userId, username, sessionId }: Props) {
   const path = usePathname()
 
   return (
-    <section className='leftsidebar custom-scrollbar z-50'>
+    <section className='leftsidebar custom-scrollbar z-40'>
       <div className=''>
         <Logo />
       </div>
@@ -29,9 +32,14 @@ export default function LeftSidebar() {
             </Link>
           )
         })}
+        <Link href={`/profile/${username}`} className='leftsidebar_link'>
+          <UserIcon isActive={path === '/profile/[username]' && sessionId === userId} />
+        </Link>
       </div>
       <div className='flex flex-col gap-4 items-center'>
-        <OptionsMenu />
+        <div className='flex gap-1 text-rose-600 items-center'>
+          <LogoutIcon className='icon-destructive' onClick={() => signOut()} />
+        </div>
       </div>
     </section>
   )

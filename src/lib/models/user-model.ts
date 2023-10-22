@@ -1,48 +1,37 @@
-import mongoose from 'mongoose'
-import { PopulatedThought } from './thought-model'
+import { prop, modelOptions, Ref } from '@typegoose/typegoose'
 
-interface IUser {
-  username?: String
-  name?: String
-  email?: String
-  emailVerified?: Date
-  image?: String
-  bio?: String
-  onboarded?: Boolean
-  spaces?: mongoose.Schema.Types.ObjectId[]
-  thoughts?: mongoose.Schema.Types.ObjectId[]
+import { Thought } from './thought-model'
+import { UserRelationship } from './user-relationship-model'
+
+@modelOptions({ schemaOptions: { collection: 'users', timestamps: true } })
+export class User {
+  @prop({ type: () => String, required: true, unique: true, lowercase: true })
+  email: string
+
+  @prop({ type: () => String, required: true, unique: true, lowercase: true })
+  username: string
+
+  @prop({ type: () => String, required: true })
+  name: string
+
+  @prop({ type: () => Boolean, required: true })
+  emailVerified: Date
+
+  @prop({ type: () => String })
+  image: string
+
+  @prop({ type: () => String, maxlength: 150 })
+  bio: string
+
+  @prop({ type: () => Boolean, default: false })
+  isOnboard: boolean
+
+  @prop({ type: () => [Thought] })
+  thoughts: Ref<Thought>[]
+
+  @prop({ type: () => [UserRelationship] })
+  followers: Ref<UserRelationship>[]
+
+  @prop({ type: () => [UserRelationship] })
+  following: Ref<UserRelationship>[]
 }
-
-const userSchema = new mongoose.Schema({
-  username: { type: String, required: true },
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  emailVerified: mongoose.Schema.Types.Date,
-  image: String,
-  bio: String,
-  onboarded: {
-    type: Boolean,
-    default: false
-  },
-  spaces: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Space'
-    }
-  ],
-  thoughts: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Thought'
-    }
-  ]
-})
-
-export type RawUser = mongoose.InferSchemaType<typeof userSchema>
-export type User = RawUser & { _id: mongoose.Types.ObjectId }
-export type PopulatedUser = {
-  thoughts: PopulatedThought
-} & User
-
-const UserModel = mongoose.models.User || mongoose.model<User>('User', userSchema)
-export default UserModel

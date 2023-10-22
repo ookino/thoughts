@@ -1,10 +1,10 @@
-import { sendVerificationRequest } from './../emails/send-verification-request'
+import { MongoDBAdapter } from '@auth/mongodb-adapter'
 import type { NextAuthOptions } from 'next-auth'
-
+import EmailProvider from 'next-auth/providers/email'
 import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
-import EmailProvider from 'next-auth/providers/email'
-import { MongoDBAdapter } from '@auth/mongodb-adapter'
+
+import { sendVerificationRequest } from './../emails/send-verification-request'
 import clientPromise from './database/mongodb'
 
 if (!clientPromise) {
