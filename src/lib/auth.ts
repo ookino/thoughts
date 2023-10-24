@@ -1,16 +1,14 @@
 import { MongoDBAdapter } from '@auth/mongodb-adapter'
+import { PrismaAdapter } from '@auth/prisma-adapter'
+import { PrismaClient } from '@prisma/client'
 import type { NextAuthOptions } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
 import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 
 import { sendVerificationRequest } from './../emails/send-verification-request'
-import clientPromise from './database/mongodb'
 
-if (!clientPromise) {
-  throw new Error('NextAuth x MongoDB connection promise is undefined')
-}
-
+const prisma = new PrismaClient()
 export const authOptions: NextAuthOptions = {
   providers: [
     EmailProvider({
@@ -34,7 +32,7 @@ export const authOptions: NextAuthOptions = {
     })
   ],
 
-  adapter: MongoDBAdapter(clientPromise),
+  adapter: PrismaAdapter(prisma),
   session: {
     strategy: 'jwt'
   },

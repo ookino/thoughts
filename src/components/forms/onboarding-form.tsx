@@ -51,7 +51,7 @@ export function OnboardingForm({ user }: OnboardingFormProps) {
         values.image = imgRes[0].fileUrl
       }
     }
-    const { isError, isSuccess, error, data } = await updateUser({
+    const {} = await updateUser({
       name: values.name,
       path: pathname,
       username: values.username.trim(),
@@ -60,7 +60,6 @@ export function OnboardingForm({ user }: OnboardingFormProps) {
       image: values.image
     })
 
-    console.log(isError, isSuccess, error, data)
     if (isError) {
       toast({
         variant: 'destructive',
@@ -76,6 +75,7 @@ export function OnboardingForm({ user }: OnboardingFormProps) {
         description: 'Onboarding completed'
       })
     }
+
     if (pathname === '/profile/update') {
       router.back()
     } else {

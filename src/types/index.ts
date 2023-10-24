@@ -1,7 +1,6 @@
-type ReturnActionResult<T = undefined> = {
-  isError?: boolean
+export type ActionResponse<T = any> = {
   error?: string | [string]
-  isSuccess?: boolean
+  ok: boolean
   message?: string
   data?: T
 }

@@ -5,9 +5,9 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export interface SendServerActionResponseProps<T> {
+export interface ResponseProps<T> {
   ok: boolean
-  data?: T
+  data?: T | any
   error?: string
 }
 
@@ -32,19 +32,4 @@ export function getInitials(name: string) {
   }
 
   return initials
-}
-
-export function sendServerActionResponse({
-  ok,
-  data,
-  error
-}: SendServerActionResponseProps<any>): SendServerActionResponseProps<any> {
-  const response: any = { ok }
-  if (data !== undefined) {
-    response.data = data
-  }
-  if (error) {
-    response.error = error
-  }
-  return response
 }
